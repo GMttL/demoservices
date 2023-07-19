@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: fraud
+
+server:
+    port: 8081
+
