@@ -1,0 +1,47 @@
+# Compiled class files
+target/
+bin/
+
+# Logs
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven specific
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/
+
+# JetBrains IDE specific
+.idea/
+*.iml
+*.iws
+
+# Eclipse specific
+.classpath
+.project
+.settings/
+
+# Temporary files
+*~
+#*.swp
+#*.swo
+#*.swn
+
+# System files
+.DS_Store
+
+# Spring Boot specific
+spring-boot-devtools
+
