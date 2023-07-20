@@ -1,7 +1,7 @@
 package com.gabrielmttl.fraud.controller;
 
 
-import com.gabrielmttl.fraud.dto.FraudCheckResponse;
+import com.gabrielmttl.clients.fraud.dto.FraudCheckResponse;
 import com.gabrielmttl.fraud.service.FraudCheckService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

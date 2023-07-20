@@ -1,8 +1,9 @@
 package com.gabrielmttl.customer.service;
 
 
+import com.gabrielmttl.clients.fraud.FraudClient;
+import com.gabrielmttl.clients.fraud.dto.FraudCheckResponse;
 import com.gabrielmttl.customer.dto.CustomerRegistrationRequest;
-import com.gabrielmttl.customer.dto.FraudCheckResponse;
 import com.gabrielmttl.customer.entity.Customer;
 import com.gabrielmttl.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
-public record CustomerService(CustomerRepository customerRepository, RestTemplate restTemplate) {
+public record CustomerService(CustomerRepository customerRepository,
+                              RestTemplate restTemplate,
+                              FraudClient fraudClient) {
 
     public void registerCustomer(CustomerRegistrationRequest customerRequest) {
         Customer customer = Customer.builder()
@@ -23,11 +26,13 @@ public record CustomerService(CustomerRepository customerRepository, RestTemplat
 
         customerRepository.saveAndFlush(customer);
 
-        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
-                "http://FRAUD/api/v1/fraud-check/{customerId}",
-                FraudCheckResponse.class,
-                customer.getId()
-        );
+//        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
+//                "http://FRAUD/api/v1/fraud-check/{customerId}",
+//                FraudCheckResponse.class,
+//                customer.getId()
+//        );
+
+        FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
 
         if (fraudCheckResponse.isFraudster()) {
             throw new IllegalStateException("Fraudster customer");
