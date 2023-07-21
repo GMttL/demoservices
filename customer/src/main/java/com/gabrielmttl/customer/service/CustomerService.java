@@ -3,6 +3,8 @@ package com.gabrielmttl.customer.service;
 
 import com.gabrielmttl.clients.fraud.FraudClient;
 import com.gabrielmttl.clients.fraud.dto.FraudCheckResponse;
+import com.gabrielmttl.clients.notification.NotificationClient;
+import com.gabrielmttl.clients.notification.NotificationRequest;
 import com.gabrielmttl.customer.dto.CustomerRegistrationRequest;
 import com.gabrielmttl.customer.entity.Customer;
 import com.gabrielmttl.customer.repository.CustomerRepository;
@@ -13,7 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public record CustomerService(CustomerRepository customerRepository,
                               RestTemplate restTemplate,
-                              FraudClient fraudClient) {
+                              FraudClient fraudClient,
+                              NotificationClient notificationClient) {
 
     public void registerCustomer(CustomerRegistrationRequest customerRequest) {
         Customer customer = Customer.builder()
@@ -38,6 +41,13 @@ public record CustomerService(CustomerRepository customerRepository,
             throw new IllegalStateException("Fraudster customer");
         }
 
-        // TODO: Send Notification
+        // TODO: Make it async
+        notificationClient.sendNotification(
+                new NotificationRequest(
+                        customer.getId(),
+                        customer.getEmail(),
+                        String.format("Welcome %s, to our awesome platform!", customer.getFirstName())
+                )
+        );
     }
 }
