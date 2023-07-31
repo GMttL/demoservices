@@ -9,12 +9,9 @@ import com.gabrielmttl.customer.dto.CustomerRegistrationRequest;
 import com.gabrielmttl.customer.entity.Customer;
 import com.gabrielmttl.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
 
 @Service
 public record CustomerService(CustomerRepository customerRepository,
-                              RestTemplate restTemplate,
                               FraudClient fraudClient,
                               NotificationClient notificationClient) {
 
@@ -29,11 +26,6 @@ public record CustomerService(CustomerRepository customerRepository,
 
         customerRepository.saveAndFlush(customer);
 
-//        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
-//                "http://FRAUD/api/v1/fraud-check/{customerId}",
-//                FraudCheckResponse.class,
-//                customer.getId()
-//        );
 
         FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
 
