@@ -10,7 +10,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(
         basePackages = "com.gabrielmttl.clients"
 )
-@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackages = {
+                "com.gabrielmttl.customer",
+                "com.gabrielmttl.amqp"
+        }
+)
 public class CustomerApplication {
 
     public static void main(String[] args) {
