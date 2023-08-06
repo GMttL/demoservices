@@ -45,6 +45,9 @@ services:
     container_name: eureka-server
     ports:
       - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin:9411/api/v2/spans
     networks:
       - spring
     depends_on:
@@ -54,6 +57,9 @@ services:
     container_name: api-gateway
     ports:
       - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin:9411/api/v2/spans
     networks:
       - spring
     depends_on:
