@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - spring
+      - postgres
     restart: unless-stopped
   pgadmin:
     container_name: pgadmin
@@ -25,7 +25,7 @@ services:
     ports:
       - "5050:80"
     networks:
-      - spring
+      - postgres
     restart: unless-stopped
   zipkin:
     image: openzipkin/zipkin
@@ -82,6 +82,7 @@ services:
       - zipkin
       - eureka-server
       - postgres
+      - rabbitmq
   notification:
     image: gabrielmttl/notification:latest
     container_name: notification
@@ -92,11 +93,12 @@ services:
       - MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin:9411/api/v2/spans
     networks:
       - spring
+      - postgres
     depends_on:
       - zipkin
       - eureka-server
-      - rabbitmq
       - postgres
+      - rabbitmq
   customer:
     image: gabrielmttl/customer:latest
     container_name: customer-service
@@ -107,12 +109,12 @@ services:
       - MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin:9411/api/v2/spans
     networks:
       - spring
+      - postgres
     depends_on:
-      - fraud-microservice
-      - rabbitmq
+      - zipkin
       - eureka-server
       - postgres
-      - zipkin
+      - rabbitmq
 
 networks:
   postgres:
